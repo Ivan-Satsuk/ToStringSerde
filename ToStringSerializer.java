@@ -41,8 +41,7 @@ public class ToStringSerializer {
     public StringBuilder bitsArrayToChars() {
         StringBuilder bits = arrayToBitsArray();
         StringBuilder charResult = new StringBuilder();
-        for (
-                int i = 0; i < bits.length(); i += 16) {
+        for (int i = 0; i < bits.length(); i += 16) {
             char c;
             if (i + 16 >= bits.length()) {
                 c = (char) (Integer.parseInt(bits.substring(i), 2));
@@ -63,7 +62,6 @@ public class ToStringSerializer {
         for (int i = 0; i < charResult.length(); i++) {
             int a = charResult.charAt(i);
             StringBuilder bitsFFromChar = new StringBuilder(Integer.toBinaryString(a));
-//            System.out.println(bitsFFromChar);
             if (bitsFFromChar.length() < 16) {
                 if (i == charResult.length() - 1) {
                     int length = bits.length() - bitArrayFromCharArray.length() - bitsFFromChar.length();
