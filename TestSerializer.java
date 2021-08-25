@@ -17,10 +17,9 @@ public class TestSerializer {
         Arrays.fill(expectedBooleans, true);
 
         boolean[] result = new boolean[100];
+        Random random = new Random();
         for (int i = 0; i < 100; i++) {
-            Random random = new Random();
             int array_length = random.nextInt(200) + 1;
-
             Short[] shortsBeforeSer;
             HashSet<Short> shorts = new HashSet<>();
             int chek = 0;
@@ -32,7 +31,7 @@ public class TestSerializer {
                     chek += 1;
                 }
             }
-            shortsBeforeSer = Arrays.stream(shorts.toArray()).map(i1 -> (Short) i1).toArray(Short[]::new);
+            shortsBeforeSer = shorts.toArray(new Short[0]);
 
             String s = ToStringSerializer.serializeShortsToString(shortsBeforeSer);
             Short[] shortsAfterDes = ToStringSerializer.deserializeStringToShorts(s);
@@ -44,7 +43,6 @@ public class TestSerializer {
 
 //        // Test with array capacity = 1
         System.out.print("Test 2: \n");
-        Random random = new Random();
         Short[] shortsBeforeSer = new Short[1];
         shortsBeforeSer[0] = (short) (random.nextInt(999) + 1);
         String charsResult = ToStringSerializer.serializeShortsToString(shortsBeforeSer);
@@ -66,7 +64,7 @@ public class TestSerializer {
                 chek += 1;
             }
         }
-        shortsBeforeSerTest3 = Arrays.stream(shorts.toArray()).map(i1 -> (Short) i1).toArray(Short[]::new);
+        shortsBeforeSerTest3 = shorts.toArray(new Short[0]);
         String charsResultTest3 = ToStringSerializer.serializeShortsToString(shortsBeforeSerTest3);
 
         System.out.printf("%d - длинна массива чисел, %d - длинна строки\n", shortsBeforeSerTest3.length, charsResultTest3.length());
