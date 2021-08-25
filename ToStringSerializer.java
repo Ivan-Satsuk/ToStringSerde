@@ -1,28 +1,21 @@
 package CountSort;
 
 import java.util.*;
+import java.util.stream.IntStream;
 
 public class ToStringSerializer {
-    final int ARRAY_LENGTH;
 
-    short[] shorts;
-
-    ToStringSerializer(int ARRAY_LENGTH) {
-
-        this.ARRAY_LENGTH = ARRAY_LENGTH;
-        shorts = new short[ARRAY_LENGTH];
-
-        for (int i = 0; i < shorts.length; i++) {
-            shorts[i] = (short) (i * 2 + 1);
-            int a = Integer.parseInt(Integer.toBinaryString(shorts[i]));
-        }
+    static String serializeShortsToString(short[] shorts) {
+        StringBuilder bitsArray = arrayToBitsArray(shorts);
+        return bitsArrayToChars(bitsArray).toString();
     }
 
-    public short[] getShorts() {
-        return shorts;
+    static short[] deserializeStringToShorts(String chars) {
+        StringBuilder bits = getBitArrayFromCharArray(chars);
+        return getShortArrayFromBitsArray(bits);
     }
 
-    private StringBuilder arrayToBitsArray() {
+    private static StringBuilder arrayToBitsArray(short[] shorts) {
         StringBuilder bits = new StringBuilder();
 
         for (short b : shorts) {
@@ -38,8 +31,7 @@ public class ToStringSerializer {
         return bits;
     }
 
-    public StringBuilder bitsArrayToChars() {
-        StringBuilder bits = arrayToBitsArray();
+    public static StringBuilder bitsArrayToChars(StringBuilder bits) {
         StringBuilder charResult = new StringBuilder();
         for (int i = 0; i < bits.length(); i += 16) {
             char c;
@@ -48,47 +40,44 @@ public class ToStringSerializer {
             } else {
                 c = (char) (Integer.parseInt(bits.substring(i, i + 16), 2));
             }
-
             charResult.append(c);
         }
         return charResult;
     }
 
-    private StringBuilder getBitArrayFromCharArray() {
-        StringBuilder bits = arrayToBitsArray();
-        StringBuilder charResult = bitsArrayToChars();
-        StringBuilder bitArrayFromCharArray = new StringBuilder();
+    private static StringBuilder getBitArrayFromCharArray(String chars) {
+        StringBuilder charResult = new StringBuilder(chars);
+        StringBuilder bitArray = new StringBuilder();
 
         for (int i = 0; i < charResult.length(); i++) {
             int a = charResult.charAt(i);
             StringBuilder bitsFFromChar = new StringBuilder(Integer.toBinaryString(a));
             if (bitsFFromChar.length() < 16) {
-                if (i == charResult.length() - 1) {
-                    int length = bits.length() - bitArrayFromCharArray.length() - bitsFFromChar.length();
-                    for (int j = 0; j < length; j++) {
-                        bitsFFromChar.insert(0, "0");
-                    }
-                    bitArrayFromCharArray.append(bitsFFromChar);
-                    break;
-                }
                 int length = bitsFFromChar.length();
                 for (int j = 0; j < 16 - length; j++) {
                     bitsFFromChar.insert(0, "0");
                 }
             }
-            bitArrayFromCharArray.append(bitsFFromChar);
+            bitArray.append(bitsFFromChar);
         }
-        return bitArrayFromCharArray;
+        return bitArray;
     }
 
-    public short[] getShortArrayFromBitsArray() {
-        StringBuilder bitArrayFromCharArray = getBitArrayFromCharArray();
-        short[] result = new short[ARRAY_LENGTH];
-        for (int i = 0, j = 0; i < bitArrayFromCharArray.length(); i += 10, j++) {
-            if (i + 10 >= bitArrayFromCharArray.length()) {
-                result[j] = Short.parseShort(bitArrayFromCharArray.substring(i), 2);
+    public static short[] getShortArrayFromBitsArray(StringBuilder bits) {
+        int excessBitsCount = bits.length() % 10;
+        int charsCount = bits.length() / 16;
+
+
+        for (int i = 0; i < excessBitsCount; i++) {
+            bits.deleteCharAt((charsCount - 1) * 16);
+        }
+
+        short[] result = new short[bits.length() / 10];
+        for (int i = 0, j = 0; i < bits.length(); i += 10, j++) {
+            if (i + 10 >= bits.length()) {
+                result[j] = Short.parseShort(bits.substring(i), 2);
             } else
-                result[j] = Short.parseShort(bitArrayFromCharArray.substring(i, i + 10), 2);
+                result[j] = Short.parseShort(bits.substring(i, i + 10), 2);
         }
         return result;
     }
