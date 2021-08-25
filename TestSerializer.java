@@ -26,7 +26,7 @@ public class TestSerializer {
             result[i] = Arrays.equals(shortsBeforeSer, shortsAfterDes);
         }
 
-        System.out.printf("Все 100 случаев массивы до сериализации и после равны - %b\n",Arrays.equals(expectedBooleans, result));
+        System.out.printf("Все 100 случаев массивы до сериализации и после равны - %b\n", Arrays.equals(expectedBooleans, result));
 
 
 //        // Test with array capacity = 1
@@ -36,7 +36,7 @@ public class TestSerializer {
         shortsBeforeSer[0] = (short) (random.nextInt(999) + 1);
         String charsResult = ToStringSerializer.serializeShortsToString(shortsBeforeSer);
         short[] shortsAfterDes = ToStringSerializer.deserializeStringToShorts(charsResult);
-        System.out.printf("Массивы до сериализации и после равны - %b\n", Arrays.equals(shortsBeforeSer,shortsAfterDes));
+        System.out.printf("Массивы до сериализации и после равны - %b\n", Arrays.equals(shortsBeforeSer, shortsAfterDes));
 
 
 //        test with max array capacity = 200
@@ -47,10 +47,10 @@ public class TestSerializer {
         }
         String charsResultTest3 = ToStringSerializer.serializeShortsToString(shortsBeforeSerTest3);
 
-        System.out.printf("%d - длинна массива чисел, %d - длинна строки\n",shortsBeforeSerTest3.length,charsResultTest3.length());
+        System.out.printf("%d - длинна массива чисел, %d - длинна строки\n", shortsBeforeSerTest3.length, charsResultTest3.length());
 
-        short [] shortsAfterDesTest3 = ToStringSerializer.deserializeStringToShorts(charsResultTest3);
-        System.out.printf("Массивы до сериализации и после равны - %b\n",Arrays.equals(shortsBeforeSerTest3,shortsAfterDesTest3));
+        short[] shortsAfterDesTest3 = ToStringSerializer.deserializeStringToShorts(charsResultTest3);
+        System.out.printf("Массивы до сериализации и после равны - %b\n", Arrays.equals(shortsBeforeSerTest3, shortsAfterDesTest3));
 
     }
 }

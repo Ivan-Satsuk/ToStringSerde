@@ -1,8 +1,5 @@
 package CountSort;
 
-import java.util.*;
-import java.util.stream.IntStream;
-
 public class ToStringSerializer {
 
     static String serializeShortsToString(short[] shorts) {
@@ -53,15 +50,15 @@ public class ToStringSerializer {
             int a = charResult.charAt(i);
             StringBuilder bitsFFromChar = new StringBuilder(Integer.toBinaryString(a));
             if (bitsFFromChar.length() < 16) {
-                if(i==charResult.length()-1 && (bitArray.length()+bitsFFromChar.length())%10==0){
+                if (i == charResult.length() - 1 && (bitArray.length() + bitsFFromChar.length()) % 10 == 0) {
                     bitArray.append(bitsFFromChar);
                     break;
                 }
-                if(i==charResult.length()-1){
+                if (i == charResult.length() - 1) {
                     boolean stop = false;
                     while (!stop) {
                         bitsFFromChar.insert(0, "0");
-                        stop=(bitArray.length()+bitsFFromChar.length())%10==0;
+                        stop = (bitArray.length() + bitsFFromChar.length()) % 10 == 0;
                     }
                     bitArray.append(bitsFFromChar);
                     break;
