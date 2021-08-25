@@ -53,6 +53,19 @@ public class ToStringSerializer {
             int a = charResult.charAt(i);
             StringBuilder bitsFFromChar = new StringBuilder(Integer.toBinaryString(a));
             if (bitsFFromChar.length() < 16) {
+                if(i==charResult.length()-1 && (bitArray.length()+bitsFFromChar.length())%10==0){
+                    bitArray.append(bitsFFromChar);
+                    break;
+                }
+                if(i==charResult.length()-1){
+                    boolean stop = false;
+                    while (!stop) {
+                        bitsFFromChar.insert(0, "0");
+                        stop=(bitArray.length()+bitsFFromChar.length())%10==0;
+                    }
+                    bitArray.append(bitsFFromChar);
+                    break;
+                }
                 int length = bitsFFromChar.length();
                 for (int j = 0; j < 16 - length; j++) {
                     bitsFFromChar.insert(0, "0");
@@ -64,20 +77,15 @@ public class ToStringSerializer {
     }
 
     public static short[] getShortArrayFromBitsArray(StringBuilder bits) {
-        int excessBitsCount = bits.length() % 10;
-        int charsCount = bits.length() / 16;
-
-
-        for (int i = 0; i < excessBitsCount; i++) {
-            bits.deleteCharAt((charsCount - 1) * 16);
-        }
 
         short[] result = new short[bits.length() / 10];
+
         for (int i = 0, j = 0; i < bits.length(); i += 10, j++) {
             if (i + 10 >= bits.length()) {
                 result[j] = Short.parseShort(bits.substring(i), 2);
             } else
                 result[j] = Short.parseShort(bits.substring(i, i + 10), 2);
+
         }
         return result;
     }
