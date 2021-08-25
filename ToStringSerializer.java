@@ -2,17 +2,17 @@ package CountSort;
 
 public class ToStringSerializer {
 
-    static String serializeShortsToString(short[] shorts) {
+    static String serializeShortsToString(Short[] shorts) {
         StringBuilder bitsArray = arrayToBitsArray(shorts);
         return bitsArrayToChars(bitsArray).toString();
     }
 
-    static short[] deserializeStringToShorts(String chars) {
+    static Short[] deserializeStringToShorts(String chars) {
         StringBuilder bits = getBitArrayFromCharArray(chars);
         return getShortArrayFromBitsArray(bits);
     }
 
-    private static StringBuilder arrayToBitsArray(short[] shorts) {
+    private static StringBuilder arrayToBitsArray(Short[] shorts) {
         StringBuilder bits = new StringBuilder();
 
         for (short b : shorts) {
@@ -48,34 +48,34 @@ public class ToStringSerializer {
 
         for (int i = 0; i < charResult.length(); i++) {
             int a = charResult.charAt(i);
-            StringBuilder bitsFFromChar = new StringBuilder(Integer.toBinaryString(a));
-            if (bitsFFromChar.length() < 16) {
-                if (i == charResult.length() - 1 && (bitArray.length() + bitsFFromChar.length()) % 10 == 0) {
-                    bitArray.append(bitsFFromChar);
+            StringBuilder charToBits = new StringBuilder(Integer.toBinaryString(a));
+            if (charToBits.length() < 16) {
+                if (i == charResult.length() - 1 && (bitArray.length() + charToBits.length()) % 10 == 0) {
+                    bitArray.append(charToBits);
                     break;
                 }
                 if (i == charResult.length() - 1) {
                     boolean stop = false;
                     while (!stop) {
-                        bitsFFromChar.insert(0, "0");
-                        stop = (bitArray.length() + bitsFFromChar.length()) % 10 == 0;
+                        charToBits.insert(0, "0");
+                        stop = (bitArray.length() + charToBits.length()) % 10 == 0;
                     }
-                    bitArray.append(bitsFFromChar);
+                    bitArray.append(charToBits);
                     break;
                 }
-                int length = bitsFFromChar.length();
+                int length = charToBits.length();
                 for (int j = 0; j < 16 - length; j++) {
-                    bitsFFromChar.insert(0, "0");
+                    charToBits.insert(0, "0");
                 }
             }
-            bitArray.append(bitsFFromChar);
+            bitArray.append(charToBits);
         }
         return bitArray;
     }
 
-    public static short[] getShortArrayFromBitsArray(StringBuilder bits) {
+    public static Short[] getShortArrayFromBitsArray(StringBuilder bits) {
 
-        short[] result = new short[bits.length() / 10];
+        Short[] result = new Short[bits.length() / 10];
 
         for (int i = 0, j = 0; i < bits.length(); i += 10, j++) {
             if (i + 10 >= bits.length()) {
